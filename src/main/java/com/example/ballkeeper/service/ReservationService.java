@@ -3,9 +3,11 @@ package com.example.ballkeeper.service;
 import com.example.ballkeeper.domain.reservation.Reservation;
 import com.example.ballkeeper.domain.reservation.ReservationStatus;
 import com.example.ballkeeper.repository.*;
+import com.example.ballkeeper.event.ReservationCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.Duration;
 import java.util.List;
@@ -16,6 +18,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final ItemRepository itemRepository;
     private final UserAccountRepository userAccountRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     // 로그인 미구현 상태이므로 임시로 userId를 파라미터로 받음
     @Transactional
@@ -38,7 +41,12 @@ public class ReservationService {
                 .startTime(start).endTime(end)
                 .status(ReservationStatus.PENDING)
                 .build();
-        return reservationRepository.save(r);
+
+        reservationRepository.save(r);
+
+        eventPublisher.publishEvent(new ReservationCreatedEvent(this, r)); // 이벤트 발행
+
+        return r;
     }
 
     @Transactional(readOnly = true)
