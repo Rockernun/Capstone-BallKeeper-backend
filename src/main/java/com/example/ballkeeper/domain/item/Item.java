@@ -15,5 +15,7 @@ public class Item {
     @Column(length=255)
     private String description;
 
+    @Builder.Default
+    @Column(nullable = false)
     private boolean active = true; // 예약 가능 여부
 }
