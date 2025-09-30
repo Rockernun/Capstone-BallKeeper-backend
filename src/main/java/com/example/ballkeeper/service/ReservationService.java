@@ -51,7 +51,7 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public List<Reservation> myReservations(Long userId) {
-        return reservationRepository.findByUserIdOrderByStartTimeDesc(userId);
+        return reservationRepository.findByUserIdAndStatusNotOrderByStartTimeDesc(userId, ReservationStatus.CANCELLED);
     }
 
     @Transactional
