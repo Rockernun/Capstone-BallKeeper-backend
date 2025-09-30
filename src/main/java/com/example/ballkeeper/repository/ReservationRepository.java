@@ -20,6 +20,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByUserIdOrderByStartTimeDesc(Long userId);
 
     List<Reservation> findByStatusOrderByStartTimeAsc(ReservationStatus status);
+    List<Reservation> findByUserIdAndStatusNotOrderByStartTimeDesc(Long userId, ReservationStatus status);
 
     boolean existsByItemIdAndStatusAndStartTimeLessThanAndEndTimeGreaterThan(
             Long itemId, ReservationStatus status,

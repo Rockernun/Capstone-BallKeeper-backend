@@ -42,6 +42,20 @@ public class AiConfig {
         };
     }
 
+    @Bean
+    @Description("사용자의 예약을 취소합니다. 예약을 취소하려면 사용자 ID와 취소할 예약의 ID가 반드시 필요합니다.")
+    public Function<CancelRequest, String> cancelReservation(ReservationService reservationService) {
+        return request -> {
+            try {
+                reservationService.cancel(request.userId, request.reservationId);
+                return "예약 번호 " + request.reservationId + "번이 성공적으로 취소되었습니다.";
+            } catch (Exception e) {
+                return "예약 취소에 실패했습니다. 원인: " + e.getMessage();
+            }
+        };
+    }
+
     public record ReservationRequest(Long userId, Long itemId, LocalDateTime startTime, LocalDateTime endTime) {}
     public record MyReservationsRequest(Long userId) {}
+    public record CancelRequest(Long userId, Long reservationId) {}
 }
