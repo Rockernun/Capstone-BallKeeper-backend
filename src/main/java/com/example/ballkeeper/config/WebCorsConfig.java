@@ -11,7 +11,7 @@ public class WebCorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 // 프론트 포트에 맞게 수정
-                .allowedOrigins("http://localhost:5174", "http://localhost:3000")
+                .allowedOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:3000")
                 .allowedMethods("GET","POST","PUT","PATCH","DELETE","OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true); // 세션 or 쿠키 쓸 경우 true
